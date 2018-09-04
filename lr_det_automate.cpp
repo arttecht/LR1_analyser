@@ -119,6 +119,7 @@ int LrDetAutoStoreMem::stringParsing(string& str)
 			break;
 		if (implAction(elStore, tmp) != 0)
 		{
+			if (tmp == "\n") linePos--;
 			status = PARSE_ERROR_ACTION;
 			break;
 		}
@@ -142,6 +143,7 @@ int LrDetAutoStoreMem::stringParsing(string& str)
 				break;
 			if (implAction(elStore, elStore.lableElem) != 0)
 			{
+				if (tmp == "\n") linePos--;
 				status = PARSE_ERROR_ACTION;
 				break;
 			}
@@ -172,6 +174,7 @@ int LrDetAutoStoreMem::stringParsing(string& str)
 				itemPos = 0;
 				linePos++;
 			}
+
 			linePositionInTable = elStore.numState;
 		}
 	}
@@ -202,6 +205,7 @@ void LrDetAutoStoreMem::printImplActionsData()
 		{
 			cout << "Type_name=" << itVar.essence << " " << itVar.typeName << " " << itVar.varName << endl;
 		}
+		cout << "level=" << itSt.level << endl;
 		cout << "=====================" << endl;
 	}
 }
@@ -256,7 +260,7 @@ int LrDetAutoStoreMem::implAction(LrTable::tableCell &cell, const string &lex)
 		}
 		else if (sa == "LEVEL-")
 		{
-			level = (level > 0) ? (level--) : (0);
+			level = (level > 0) ? (level-1) : (0);
 		}
 		else if (sa == "LIT")
 		{
@@ -291,20 +295,47 @@ int LrDetAutoStoreMem::implAction(LrTable::tableCell &cell, const string &lex)
 			st.level = level;
 			implStore.push_back(st);
 			st.clear();
-
-/*			for (unsigned i = 0; i < implStore.size(); ++i)
+			for (unsigned i = 0; i < implStore.size(); ++i)
 			{
 				for (unsigned j = 1; j < implStore.size(); ++j)
 				{
-					if ((i == j) || (implStore[i].var[0].essence != implStore[j].var[0].essence))
+					if (i == j || implStore[i].var[0].essence != implStore[j].var[0].essence || implStore[i].level != implStore[j].level || 
+						implStore[i].var.size() != implStore[j].var.size() || implStore[i].var[0].varName != implStore[j].var[0].varName)	continue;
+
+					vector<SemanticType::defVar> v = implStore[i].var;
+					vector<SemanticType::defVar> v2 = implStore[j].var;
+					bool checkListParams = true;
+					//cout << implStore[i].var[0].typeName << " " << implStore[i].var[0].varName << " " << implStore[j].var[0].typeName << " " << implStore[j].var[0].varName << " @@@\n";
+					for (unsigned k = 0; k < v.size(); ++k)
 					{
-						break;
+						if (v[k].typeName != v2[k].typeName /*&& v[k].varName[0] != v2[k].varName[0]*/)
+						{
+							checkListParams = false;
+							break;
+						}
+						else
+						{
+							if ((v[k].varName[0] == '*' || v[k].varName[0] == '&') || (v2[k].varName[0] == '*' || v2[k].varName[0] == '&'))
+							{
+								if (v[k].varName[0] != v2[k].varName[0])
+								{
+									checkListParams = false;
+									break;
+								}
+							}
+							//cout << v[k].typeName << " " << v[k].varName[0] << " " << v2[k].typeName << " " << v2[k].varName[0] << "\n";
+						}
 					}
-					vector<SemanticType::defVar> &v = implStore[i].var;
-					vector<SemanticType::defVar> &v2 = implStore[j].var;
+					if (checkListParams == true)
+					{
+						cout << "Конфликт, повторное объявление функции!\n";
+						return -1;
+					}
+
 				}
 			}
-*/		}
+
+		}
 	}
 	return 0;
 }

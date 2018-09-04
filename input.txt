@@ -1,5 +1,8 @@
 void * D5a1( int* a , int &ch1 , int & ch2, int& ch3  )  ;
-void * D5a1( int* a , char &ch1 , char & ch2, char& ch3  )  ;
+
+void  *D5a1( int* a , char &ch1 , char & ch2, char& ch3  )  ;
+void  *D5a1( int& a , char &ch1 , char & ch2, char& ch3  )  ;
+
 float& D5a1( int * a)  ;
 
 int f1( int &val[10][10][300] ,void *p, ... );
@@ -7,16 +10,13 @@ int f1( int &val[10][10][300] ,void *p, ... );
 namespace NNm1 { 
 	namespace N5 { 
 		double f1( void *p ); 
+		double f2( void *p ); 
 	} 
 }
+int *f1( int &val[10][10][300] ,void *p, ... );
 
-double f1( void *p )
-{   } 
+double f1( void *p ) {   } 
 int f2( void *p );
-double f1( void *p ); 
-
-int f2( void *p ); 
-int f2( void *p );
-int f1( int val[ ] ,void *p, ... );
+double _a12( void *p ); 
 
 int D5a1( int a)  ;

@@ -27,12 +27,14 @@ int f5(int a)
 {
 	return 0;
 }
-int *f25(int a)
-{
-	return nullptr;
-}
-
-
+namespace NN1 {
+};
+namespace NN1 {
+	int f5(int a)
+	{
+		return 0;
+	}
+};
 
 auto grammar  = make_shared<LrGrammar>();
 auto graph	  = make_shared<LrGraph>(grammar);
@@ -59,7 +61,7 @@ int main()
 
 	/* Размещаем входные данные в объект std::string в конце важно не забыть поставить символ '$' */
 	fillRawDataFromFile(ifs, textForParsing);
-	cout << textForParsing << endl;
+	//cout << textForParsing << endl;
 
 	/* Строим граф состояний */
 	graph->defMultipleStates();
@@ -71,7 +73,7 @@ int main()
 
 	/* Согласно таблицы разбора производим проверку (парсинг) данных из входного файла */
 	automate->stringParsing(textForParsing);
-	automate->printImplActionsData();
+	//automate->printImplActionsData();
 
 	std::cin.get();
 	return 0;
