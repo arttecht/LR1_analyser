@@ -14,28 +14,6 @@ ifstream	ifsGram("grammar.txt");
 ofstream	ofs("output.txt");
 string		textForParsing;
 
-//string inpExpression("void * D5a1( int* a , int &ch , int & ch, int& ch  )  ;$");
-//string inpExpression("void * D5a1( int* a , char &ch , char & ch, char& ch  )  ;$");
-//string inpExpression2("float& D5a1( int * a)  ;$");
-//string inpExpression3("int f1( int &val[10][10][300] ,void *p, ... );$");
-//string inpExpression4("namespace NNm1 { namespace N5 { double f1( void *p ); } s}  $");
-//string inpExpression5("double f1( void *p ){   } int f2( void *p );$");
-//string inpExpression6("double f1( void *p ); int f2( void *p ); $ int f2( void *p );$");
-//string inpExpression7("int f1( int val[ ] ,void *p, ... );$");
-
-int f5(int a)
-{
-	return 0;
-}
-namespace NN1 {
-};
-namespace NN1 {
-	int f5(int a)
-	{
-		return 0;
-	}
-};
-
 auto grammar  = make_shared<LrGrammar>();
 auto graph	  = make_shared<LrGraph>(grammar);
 auto table	  = make_shared<LrTable>(grammar, graph);
